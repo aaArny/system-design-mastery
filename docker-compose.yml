@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+  service-a:
+    build: ./week1-foundations/Load-balancer
+    environment:
+      - SERVICE_NAME=service-a
+    ports:
+      - "8001:8080"
+
+  service-b:
+    build: ./week1-foundations/Load-balancer
+    environment:
+      - SERVICE_NAME=service-b
+    ports:
+      - "8002:8080"
+
+  load-balancer:
+    image: nginx:latest
+    volumes:
+      - ./week1-foundations/Load-balancer/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "8080:80"
+    depends_on:
+      - service-a
+      - service-b
